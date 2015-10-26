@@ -1,0 +1,26 @@
+.lives {
+  background-color: gray;
+}
+
+.line {
+  clear: left;
+}
+
+.cell {
+  float: left;
+  border: solid black;
+  text-align: center;
+}
+
+.field {
+  position: absolute;
+  margin: 10px;
+}
+
+md-content {
+  padding: 20px;
+}
+
+section {
+  margin-bottom: 40px;
+}

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Game of Life</title>
+
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.7.1/angular-material.min.css">
+    <link rel="stylesheet" href="main.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.13/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.13/angular-route.min.js"></script>
+    <script src="https://code.angularjs.org/1.3.13/angular-animate.min.js"></script>
+    <script src="https://code.angularjs.org/1.3.13/angular-aria.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/0.7.1/angular-material.min.js"></script>
+
+    <script type="text/javascript" src="main.js"></script>
+
+</head>
+<body ng-app="main" ng-controller="mainCtrl" layout="row" ng-keydown="keydown($event)">
+    <md-sidenav md-is-open="opt.open" class="md-sidenav-left md-whiteframe-z1">
+        <md-content>
+            <section>
+                To toggle press s
+                <md-checkbox ng-model="opt.pauseOnOpen">
+                    Play / Pause on toggle
+                </md-checkbox>
+            </section>
+
+            <md-divider></md-divider>
+
+            <section>
+                <md-input-container>
+                  <label>Boardsize:</label>
+                  <input ng-model="field.size" ng-change="createNew(field.size)">
+                </md-input-container>
+                Cellsize: {{cell.dim}}
+                <md-slider min="1" max="150" ng-model="cell.dim" aria-label="cellsize" ng-change="cell.dim < opt.fixedSizeWhenCell ? opt.fixedSizeWhenCell = cell.dim : break">
+                </md-slider>
+                <md-checkbox ng-model="opt.fixedSize">
+                    Fixed size
+                </md-checkbox>
+                <md-input-container>
+                  <label>Set fixed if size bigger than:</label>
+                  <input ng-model="opt.fixedSizeWhenSize">
+                </md-input-container>
+                <md-input-container>
+                  <label>or if cellsize smaller than:</label>
+                  <input ng-model="opt.fixedSizeWhenCell">
+                </md-input-container>
+                <md-input-container>
+                  <label>Time between Cycleinvokation (ms):</label>
+                  <input ng-model="opt.time">
+                </md-input-container>
+                <md-input-container>
+                  <label>Lifecycle:</label>
+                  <input ng-model="opt.curCycle" disabled> <!-- ng-change="opt.skipToCycle(opt.curCycle)" -->
+                </md-input-container>
+                <md-button ng-click="opt.runCycle()">Next Cycle</md-button>
+                <md-button ng-click="opt.playPause()">Play / Pause</md-button>
+            </section>
+        </md-content>
+    </md-sidenav>
+    <div class="field" style="width: {{field.x()}}px; height: {{field.y()}}px;margin-top: {{field.marTop()}};margin-left: {{field.marLeft()}}" ng-mousedown="mouseFlag = true" ng-mouseup="mouseFlag = false" ng-mouseleave="mouseFlag = false">
+        <div ng-repeat="(xi, x) in data.cur" class="line">
+            <div ng-repeat="y in x track by $index" ng-mousedown="field.userChange(xi, $index, y)" ng-mouseover="mouseFlag ? (field.userChange(xi, $index, y)): break;" style="border-width:{{cell.dim/20}}px; width: {{cell.dim}}px;height: {{cell.dim}}px;" class="cell" ng-class="y ? 'lives' : 'dead'"></div>
+        </div>
+    </div>
+</body>
+</html>
